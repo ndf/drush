@@ -40,6 +40,10 @@ class DisplayCommands extends DrushCommands {
             }
         }
 
+        // Flush all caches at the end of the operation. This ensures that
+        // config-export shows the correct changes.
+        drupal_flush_all_caches();
+
         $this->logger()->success(dt('Finished rebuild display config. Do a config export to see the results.'));
     }
 
