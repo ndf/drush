@@ -1,30 +1,34 @@
 <?php
 
-namespace Drush\Commands\core;
+namespace Drush\Drupal\Commands\core;
 
-use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\field\EntityDisplayRebuilder;
 use Drush\Commands\DrushCommands;
 use Drush\Exceptions\UserAbortException;
 
-class DisplayCommands extends DrushCommands
+class EntityDisplayCommands extends DrushCommands
 {
-
     /**
-     * Rebuild form and display configuration for all entities and bundles.
+     * Rebuild form and display configurations for entities and bundles.
      *
      * @command entity:rebuild-displays
-     * @bootstrap full
-     * @kernel update
      *
-     * @param string $entity_type_option An entity machine name. Defaults to all.
-     * @param string $bundle_option An entity bundle name. Defaults to all.
+     * @param string $entity_type_option Entity-type machine-name.
+     * @param string $bundle_option Bundle machine-name.
      *
      * @usage drush entity:rebuild-displays
+     *   Rebuild form and display configurations for all bundles in all entity-types.
      * @usage drush entity:rebuild-displays node
+     *   Rebuild form and display configurations for all bundles in entity-type node.
      * @usage drush entity:rebuild-displays node article
+     *   Rebuild form and display configurations for article bundle in entity-type node.
+     * @usage drush entity:rebuild-displays all article
+     *   Rebuild form and display configurations for article bundle in all entity-types.
+     *
      * @usage drush entity:rebuild-displays all all
-     * @usage drush entity:rebuild-displays all artile
+     *   Alias for `drush entity:rebuild-displays`.
+     * @usage drush entity:rebuild-displays node all
+     *   Alias for `drush entity:rebuild-displays node`.
      */
     public function rebuildDisplays(string $entity_type_option = 'all', string $bundle_option = 'all') {
         if ($this->getConfig()->simulate()) {
@@ -59,7 +63,7 @@ class DisplayCommands extends DrushCommands
         $entity_display_rebuilder = \Drupal::classResolver(EntityDisplayRebuilder::class);
         foreach ($bundle_info as $entity_type => $bundles) {
             foreach ($bundles as $bundle => $bundle_settings) {
-                $this->logger()->notice('Finished rebuiling form and display configurations for: ' . $entity_type . ':' . $bundle);
+                $this->logger()->notice('Finished rebuilding form and display configurations for: ' . $entity_type . ':' . $bundle);
             }
         }
 
@@ -67,7 +71,7 @@ class DisplayCommands extends DrushCommands
         // config-export shows the correct changes.
         drupal_flush_all_caches();
 
-        $this->logger()->success(dt('Finished rebuild display config. Do a config export to see the results.'));
+        $this->logger()->success(dt('Finished rebuilding form and display configurations. Run drush config-export if you want to add changes to your version control system.'));
     }
 
 }
