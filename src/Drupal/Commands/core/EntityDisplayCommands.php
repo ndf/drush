@@ -2,7 +2,6 @@
 
 namespace Drush\Drupal\Commands\core;
 
-use Drupal\field\EntityDisplayRebuilder;
 use Drush\Commands\DrushCommands;
 use Drush\Exceptions\UserAbortException;
 
@@ -30,7 +29,8 @@ class EntityDisplayCommands extends DrushCommands
      * @usage drush entity:rebuild-displays node all
      *   Alias for `drush entity:rebuild-displays node`.
      */
-    public function rebuildDisplays(string $entity_type_option = 'all', string $bundle_option = 'all') {
+    public function rebuildDisplays(string $entity_type_option = 'all', string $bundle_option = 'all')
+    {
         if ($this->getConfig()->simulate()) {
             throw new \Exception(dt('rebuild-display-config command does not support --simulate option.'));
         }
@@ -38,7 +38,7 @@ class EntityDisplayCommands extends DrushCommands
         $this->output()->writeln(dt('Form and display configurations will be rebuild for the following bundles:'));
         $this->io()->newLine();
 
-        /** @var EntityTypeBundleInfoInterface $bundle_info */
+        /** @var \Drupal\Core\Entity\EntityTypeBundleInfoInterface $bundle_info */
         $bundle_info = \Drupal::service('entity_type.bundle.info')->getAllBundleInfo();
         foreach ($bundle_info as $entity_type => $bundles) {
             if ($entity_type !== $entity_type_option && $entity_type_option !== 'all') {
@@ -73,5 +73,4 @@ class EntityDisplayCommands extends DrushCommands
 
         $this->logger()->success(dt('Finished rebuilding form and display configurations. Run drush config-export if you want to add changes to your version control system.'));
     }
-
 }
