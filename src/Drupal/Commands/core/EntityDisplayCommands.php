@@ -10,6 +10,8 @@ class EntityDisplayCommands extends DrushCommands
     /**
      * Rebuild form and display configurations for entities and bundles.
      *
+     * See Drupal Core: \Drupal\field\EntityDisplayRebuilder::rebuildEntityTypeDisplays
+     *
      * @command entity:rebuild-displays
      *
      * @param string $entity_type_option Entity-type machine-name.
