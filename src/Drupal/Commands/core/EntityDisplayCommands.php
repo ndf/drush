@@ -33,10 +33,6 @@ class EntityDisplayCommands extends DrushCommands
      */
     public function rebuildDisplays(string $entity_type_option = 'all', string $bundle_option = 'all')
     {
-        if ($this->getConfig()->simulate()) {
-            throw new \Exception(dt('rebuild-display-config command does not support --simulate option.'));
-        }
-
         $this->output()->writeln(dt('Form and display configurations will be rebuild for the following bundles:'));
         $this->io()->newLine();
 
@@ -57,7 +53,13 @@ class EntityDisplayCommands extends DrushCommands
             }
         }
 
-        if (!$this->getConfig()->simulate() && !$this->io()->confirm(dt('Do you really want to continue?'))) {
+        // Simulation is not supported, because class EntityDisplayRebuilder does not support it.
+        // Therefor we cannot get a diff of specific configurations that will be changed until we
+        // have finished rebuilding all form and display configurations.
+        if ($this->getConfig()->simulate()) {
+            throw new \Exception(dt('rebuild-display-config command does not support --simulate option.'));
+        }
+        if (!$this->io()->confirm(dt('Do you really want to continue?'))) {
             throw new UserAbortException();
         }
 
