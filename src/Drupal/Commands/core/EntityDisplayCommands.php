@@ -64,7 +64,7 @@ class EntityDisplayCommands extends DrushCommands
         }
 
         /* @var \Drupal\field\EntityDisplayRebuilder $entity_display_rebuilder */
-        $entity_display_rebuilder = \Drupal::classResolver(EntityDisplayRebuilder::class);
+        $entity_display_rebuilder = \Drupal::classResolver(\Drupal\field\EntityDisplayRebuilder::class);
         foreach ($bundle_info as $entity_type => $bundles) {
             foreach ($bundles as $bundle => $bundle_settings) {
                 $this->logger()->notice('Finished rebuilding form and display configurations for: ' . $entity_type . ':' . $bundle);
